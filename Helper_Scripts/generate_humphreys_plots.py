@@ -1,9 +1,12 @@
 """
 Self-contained Humphreys Fig 3 replication: QCRB vs N and QCRB vs d
-for eta = 0.85, 0.9, 0.95 under independent photon-loss noise.
+for eta = 1.0, 0.85, 0.9, 0.95 under independent photon-loss noise.
 
 Uses Kraus-operator approach for the loss channel (memory efficient).
 All physics functions are inline — no imports from legacy Project A code.
+
+Fig 3A: d=2 fixed, n=1..6  → N=3,6,9,12,15,18  (all dims ≤ 6,859)
+Fig 3B: n=1 fixed, d=1..4  → N=2,3,4,5          (all dims ≤ 3,125)
 """
 import matplotlib
 matplotlib.use('Agg')  # Non-interactive backend: no GUI windows
@@ -205,19 +208,21 @@ def calculate_QFIM_pure(coeffs, combs, d):
 etas_to_test = [0.95, 0.90, 0.85]
 colors = ['purple', 'orange', 'brown']
 
-# Fig 3A: CRB vs N (d=3 fixed, n=1,2,3)
-d_fixed = 3
-n_values_a = [1, 2, 3]
+# Fig 3A: CRB vs N (d=2 fixed, n=1..6)
+# d=2 keeps Hilbert dims small (max 19^3=6859) so ALL N points are computable.
+# N = n*(d+1) = 3n  →  N = 3, 6, 9, 12, 15, 18
+d_fixed = 2
+n_values_a = [1, 2, 3, 4, 5, 6]
 N_values_a = [n * (d_fixed + 1) for n in n_values_a]
 
-# Fig 3B: CRB vs d (n=1 fixed, d=1..6)
+# Fig 3B: CRB vs d (n=1 fixed, d=1..4)
 n_fixed = 1
-d_values_b = [1, 2, 3, 4, 5, 6]
+d_values_b = [1, 2, 3, 4]
 N_values_b = [n_fixed * (d + 1) for d in d_values_b]
 
 # Memory-safety: skip if (d+1)-mode Hilbert-space dim exceeds this
-# dim=6561 (N=8,d=3) takes ~3min; dim=28561 (N=12,d=3) takes 15+ min
-DIM_CAP = 10000
+# Max expected dim: 19^3 = 6859 (n=6, d=2) — well within this cap
+DIM_CAP = 8000
 
 # ===================================================================
 # 1.  PURE STATE BASELINES  (eta = 1.0)
@@ -345,56 +350,83 @@ fig, ax = plt.subplots(figsize=(8, 5))
 
 # Pure state baseline
 ax.plot(N_values_a, crbs_pure_a, 's-', color='green', markersize=8,
-        label=r'HB$(n, %d)\ \eta=1.0$' % (d_fixed + 1))
+        label=r'HB(n,%d) $\eta=1.0$' % (d_fixed + 1))
 
 # Mixed state curves
 for i, eta in enumerate(etas_to_test):
     if valid_N[eta]:
         ax.plot(valid_N[eta], mixed_a[eta], 'o-', color=colors[i], markersize=8,
-                label=r'HB$(n, %d)\ \eta=%s$' % (d_fixed + 1, eta))
+                label=r'HB(n,%d) $\eta=%s$' % (d_fixed + 1, eta))
 
 # Ideal limits
 ax.plot(N_values_a, multipixel_a, '--', color='red', lw=2,
-        label=r'Optimal $|\psi_s\rangle$ (ideal)')
+        label=r'Optimal $|\psi_s\rangle$ (Ideal)')
 ax.plot(N_values_a, noon_a, '--', color='blue', lw=2,
-        label='N00N States (ideal)')
+        label='N00N States (Ideal)')
 
 ax.set_xlabel(f"Total photon number N = {d_fixed+1}n", fontsize=12)
-ax.set_ylabel(r"QCRB  $\mathrm{Tr}(\mathcal{I}^{-1})$", fontsize=12)
-ax.set_title(f"QCRB vs N   (d = {d_fixed})", fontsize=14)
+ax.set_ylabel(r"Total variance $|\Delta\theta|^2$", fontsize=12)
+ax.set_title(f"CRB vs N for d={d_fixed} under Noise", fontsize=14)
 ax.set_xticks(N_values_a)
 ax.grid(True, ls=':', alpha=0.6)
 ax.legend(fontsize=10)
 
-path_a = os.path.join(out_folder, "QCRB_vs_N_eta_sweep.png")
+path_a = os.path.join(out_folder, "QCRB_vs_N_d2_noise.png")
 fig.savefig(path_a, dpi=300, bbox_inches='tight')
 plt.close(fig)
 print(f"  Saved -> {path_a}")
+
+# ---- Fig 3A (Zoom-in): QCRB vs N ----
+fig, ax = plt.subplots(figsize=(8, 5))
+N_zoom = N_values_a[2:]  # N=9, 12, 15, 18
+ax.plot(N_zoom, crbs_pure_a[2:], 's-', color='green', markersize=8,
+        label=r'HB(n,%d) $\eta=1.0$' % (d_fixed + 1))
+for i, eta in enumerate(etas_to_test):
+    if valid_N[eta]:
+        ax.plot(N_zoom, mixed_a[eta][2:], 'o-', color=colors[i], markersize=8,
+                label=r'HB(n,%d) $\eta=%s$' % (d_fixed + 1, eta))
+ax.plot(N_zoom, multipixel_a[2:], '--', color='red', lw=2,
+        label=r'Optimal $|\psi_s\rangle$ (Ideal)')
+ax.plot(N_zoom, noon_a[2:], '--', color='blue', lw=2,
+        label='N00N States (Ideal)')
+
+ax.set_xlabel(f"Total photon number N = {d_fixed+1}n", fontsize=12)
+ax.set_ylabel(r"Total variance $|\Delta\theta|^2$", fontsize=12)
+ax.set_title(f"CRB vs N for d={d_fixed} (Zoom-in)", fontsize=14)
+ax.set_xticks(N_zoom)
+ax.set_ylim(0, 0.2)
+ax.grid(True, ls=':', alpha=0.6)
+ax.legend(fontsize=10)
+
+path_zoom = os.path.join(out_folder, "QCRB_vs_N_d2_zoomin.png")
+fig.savefig(path_zoom, dpi=300, bbox_inches='tight')
+plt.close(fig)
+print(f"  Saved -> {path_zoom}")
 
 # ---- Fig 3B: QCRB vs d ----
 fig, ax = plt.subplots(figsize=(8, 5))
 
 ax.plot(d_values_b, crbs_pure_b, 's-', color='green', markersize=8,
-        label=r'HB$(1, d{+}1)\ \eta=1.0$')
+        label=r'HB(1, d) $\eta=1.0$')
 
 for i, eta in enumerate(etas_to_test):
     if valid_d[eta]:
         ax.plot(valid_d[eta], mixed_b[eta], 'o-', color=colors[i], markersize=8,
-                label=r'HB$(1, d{+}1)\ \eta=%s$' % eta)
+                label=r'HB(1, d) $\eta=%s$' % eta)
 
 ax.plot(d_values_b, multipixel_b, '--', color='red', lw=2,
-        label=r'Optimal $|\psi_s\rangle$ (ideal)')
+        label=r'Optimal $|\psi_s\rangle$ (Ideal)')
 ax.plot(d_values_b, noon_b, '--', color='blue', lw=2,
-        label='N00N States (ideal)')
+        label='N00N States (Ideal)')
 
-ax.set_xlabel("Number of phases d", fontsize=12)
-ax.set_ylabel(r"QCRB  $\mathrm{Tr}(\mathcal{I}^{-1})$", fontsize=12)
-ax.set_title(f"QCRB vs d   (n = {n_fixed})", fontsize=14)
+ax.set_xlabel("Number of phases (d)", fontsize=12)
+ax.set_ylabel(r"Total variance $|\Delta\theta|^2$", fontsize=12)
+ax.set_title(f"CRB vs d for n={n_fixed} under Noise", fontsize=14)
 ax.set_xticks(d_values_b)
 ax.grid(True, ls=':', alpha=0.6)
 ax.legend(fontsize=10)
 
-path_b = os.path.join(out_folder, "QCRB_vs_d_eta_sweep.png")
+path_b = os.path.join(out_folder, "QCRB_vs_d_noise.png")
 fig.savefig(path_b, dpi=300, bbox_inches='tight')
 plt.close(fig)
 print(f"  Saved -> {path_b}")
