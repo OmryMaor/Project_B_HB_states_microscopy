@@ -1,0 +1,561 @@
+--- PAGE 1 ---
+ 
+ 
+Final Report: Project A  
+ 
+Quantum Enhanced Electron 
+Microscopy  
+ 
+ Students:  
+ 
+Omry Maor  
+Ori Yehoshua  
+ 
+ Supervisor :  
+ 
+ Shiran Even -Haim  
+ 
+ 
+Semester: Spring 2025  
+Date: March 2026  
+ 
+
+--- PAGE 2 ---
+  
+1 
+ Table of Contents  
+List of Figures  ................................ ................................ ................................ ..................  2 
+List of Equations  ................................ ................................ ................................ ..............  3 
+List Of Tables  ................................ ................................ ................................ ..................  4 
+1 Abstract  ................................ ................................ ................................ .......................  5 
+2 Introduction and Motivation  ................................ ................................ .........................  3 
+3 Background and Literature Survey  ................................ ................................ ..............  4 
+3.1 Quantum Metrology and Phase Estimation  ................................ ...........................  4 
+3.2 Spin Squeezing in Electron Microscopy  ................................ ................................  4 
+3.3 Quantum Enhanced Multiple Phase Estimation  ................................ ....................  6 
+4 Chosen Method and Implementation  ................................ ................................ ..........  7 
+4.1 The Discretized Multipixel Framework  ................................ ................................ .. 7 
+4.2 Noise Modeling via Particle Loss  ................................ ................................ ..........  7 
+4.3 Numerical Implementation and Optimization  ................................ .........................  8 
+5 Results  ................................ ................................ ................................ ......................  10 
+5.1 Fundamental Baselines  ................................ ................................ .......................  10 
+5.2 Optimization Results  ................................ ................................ ...........................  10 
+6 Conclusions  ................................ ................................ ................................ ..............  16 
+6.1 Multipixel estimation dramatically improves resolution for a given dose  .............  16 
+6.2 Results match theoretical optimum for high transmission  ................................ ... 16 
+7 Future Work  ................................ ................................ ................................ ..............  18 
+7.1 Investigating the Correlation Between Transmission and Phase  ........................  18 
+7.2 Exploring Alternative Robust States  ................................ ................................ .... 18 
+7.3 Applying Different Evaluation Metrics  ................................ ................................ .. 18 
+8 References  ................................ ................................ ................................ ................  19 
+--- PAGE 3 ---
+  
+2 
+ List of Figures  
+Figure  1: High-resolution image without damaging the material  ................................ ...... 3 
+Figure 2: The two spin -squeezing methods we explored during our project [2]  ...............  5 
+Figure 3: The multiphase estimation scheme [1]  ................................ .............................  6 
+Figure 4: Results for 𝜂=0.80 ................................ ................................ ........................  11 
+Figure 5: Results for 𝜂=0.90 ................................ ................................ ........................  11 
+Figure 6: Results for 𝜂=0.95 ................................ ................................ ........................  12 
+Figure 7: Results for 𝜂=1.00 ................................ ................................ ........................  12 
+Figure 8: Results for a spatial -varying transmission parameter 𝜼=(1.0,0.5) ...............  13 
+Figure 9: 𝑇𝑟[𝐼𝜃(𝜓𝑖𝑛)] 𝑣𝑠.𝑝 and CRB for a non -optimized uniform superposition state  ... 14 
+Figure 10: |⟨𝜓𝑖𝑛|𝜓∗⟩|2 for the optimal states of varying (𝜂,𝑝) combinations  ..................  15 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- PAGE 4 ---
+  
+3 
+ List of Equations  
+1) Initial State  ................................ ................................ ................................ ..................  7 
+2) The Channel  ................................ ................................ ................................ ...............  8 
+3) Output State  ................................ ................................ ................................ ................  8 
+4) QFI Matrix  ................................ ................................ ................................ ...................  9 
+5) Optimization Objective  ................................ ................................ ................................  9 
+6) Reference State from [1]  ................................ ................................ ...........................  10 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- PAGE 5 ---
+  
+4 
+ List Of Tables  
+Table 1: QFI of optimized states vs. reference state in %  for varying 𝜂,𝑝 values  ..........  13 
+  
+--- PAGE 6 ---
+  
+5 
+ 1 Abstrac t 
+In this project, we investigated methods for improving the resolution in electron 
+microscopy using quantum information under a radiation dose limit. Initially, we explored 
+spin squeezing techniques that allow overcoming the classical limit (SQL), but we shifted 
+our research direction to multipixel phase estimation, since practically, the phase 
+estimation of the electron  in a microscope  occurs across multiple  pixels in parallel.  
+This solution is based on paper  [1], which demonstrates that the simultaneous estimation 
+of multiple phases provides an asymptotic advantage of 𝒪(𝑑) over the separate 
+estimation of each phase. Subsequently, we ran simulations and optimized the quantum 
+states under a noisy channel model involving particle loss in a beam splitter with a single 
+environmental mode, as well as a beam splitter with an envir onmental mode for each 
+particle  independently . 
+The results show that multipixel phase estimation dramatically improves the resolution for 
+a given radiation dose, and that the obtained optimal states correspond to the ideal states 
+from paper  [1] with high overlap.  
+In doing so, we essentially demonstrated that under a simple noise model, a significant 
+quantum advantage can be achieved in particle phase estimation under a radiation dose 
+constraint – an achievement of great importance in various scientific field s.
+--- PAGE 7 ---
+  
+3 
+ 
+Figure 1: The challenge of obtaining a high -resolution image without damaging the material  2 Introduction and Motivation  
+Efficient microscopy is a critical requirement in biology. Transmission Electron 
+Microscopes (TEMs) can achieve atomic resolution; however, they are highly limited by 
+beam -induced radiation damage. Consequently, imaging sensitive samples requires an 
+extrem ely limited electron dose, which fundamentally degrades image precision.  
+The overarching goal of the research team is to improve electron microscopy using 
+quantum technology. Specifically, the global objective is to maximize image resolution 
+under a finite dose by optimally utilizing the available phase information extracted fr om 
+every single electron. Classical phase estimation is bounded by shot -noise limits; 
+however, by exploiting quantum entanglement between electrons, one can surpass these 
+classical bounds and approach fundamental quantum limits, dramatically improving the 
+signal -to-noise ratio (SNR) for a given dose.  
+Within this larger framework, image formation must be treated as a multiparameter 
+problem, as a single specimen imparts varying local phase shifts across a two -
+dimensional spatial grid of pixels. Our specific goal in this project was to find numerically 
+optimized quantum states for multipixel phase estimation in a realistic, noisy environment. 
+By simulating a multi -mode interferometer subjected to mixed noise channels , 
+incorporating both independent particle loss and correlated electron loss , we aimed to 
+identify the quantum states that yielded the lowest bound on the estimated phase’s 
+variance . Identifying these optimal states under realistic noise lays the theoretical 
+groundwork for future experimental efforts to implement quantum -enhanced resolution in 
+practical electron microscopy.  
+ 
+ 
+  
+--- PAGE 8 ---
+  
+4 
+ 3 Background and Literature Survey  
+3.1 Quantum Metrology and Phase Estimation  
+To maximize the information extracted from a limited electron dose, we look to quantum 
+metrology. Classically, the precision of phase estimation is bounded by the Standard 
+Quantum Limit (SQL), where the phase variance scales as  |Δ𝜙|2≥1
+𝑁, with 𝑁 representing 
+the number of  particles  in the dose . Quantum metrology allows us to surpass this classical 
+limit by utilizing entanglement, pushing the precision towards the theoretical Heisenberg 
+Limit : |Δ𝜙|2≥1
+𝑁2. 
+To mathematically evaluate the potential precision of a quantum state, we utilize the 
+Quantum Fisher Information (QFI) matrix, denoted as  𝐼𝜃. The precision of multiparameter 
+estimation is governed by the quantum Cramér -Rao Bound (CRB), which dictates that 
+the covariance matrix of the estimated phases is lower -bounded by the inverse of the QFI 
+matrix: 𝐶𝑜𝑣 (𝜽)≥𝐼𝜃−1. By maximizing the trace of the QFI matrix, we minimize the overall 
+phase variance across all pixels, effectively minimizing the average error in the 
+reconstructed image.  
+3.2 Spin Squeezing in Electron Microscopy  
+A prominent quantum metrological approach to surpassing the SQL is spin squeezing, 
+which redistributes quantum uncertainty via multi -particle entanglement to reduce 
+fluctuations in the phase variable of interest [2]. We initially explored two primary methods 
+for generating spin -squeezed electron states in a Mach -Zehnder Interferometer (MZI): 
+Interaction -Based Squeezing , which exploits collective Coulomb repulsion, and 
+Measurement -Based Squeezing , which functions as a quantum non -demolition (QND) 
+measurement.  
+--- PAGE 9 ---
+  
+5 
+  
+ 
+While spin squeezing is highly robust against electron loss and feasible with near -future 
+technology, practical image formation inherently occurs across multiple pixels in parallel. 
+Therefore, rather than immediately attempting to extend single -parameter s pin-squeezing 
+methodologies to multi -pixel arrays, we shifted our research focus to identifying and 
+optimizing initial states inherently designed for simultaneous multiparameter (multipixel) 
+estimation.  
+Figure 2: The two spin -squeezing methods we explored during our project [2] 
+--- PAGE 10 ---
+  
+6 
+ 3.3 Quantum Enhanced Multiple Phase Estimation  
+To address the multiparameter nature of imaging, we base our approach on the 
+framework of multipixel phase estimation  [1]. In this model of phase imaging, an 
+interferometer is divided into a preparation stage, an interaction stage, and a 
+measurement stage. 𝑁 particles are distributed across 𝑑+1 modes, where  𝑑 modes act 
+as independent signal pixels that acquire independent phases, and one mode serves as 
+a reference : 𝜽=(𝜃0,𝜃1,𝜃2,…,𝜃𝑑). 
+ 
+Simultaneous estimation of multiple phases yields a fundamental quantum advantage. 
+Estimating phases independently with quantum resources (such as states) allocates only 
+𝑁
+𝑑 electrons per phase, yielding a total variance scaling of |Δ𝜃|2≥𝑑3
+𝑁2. In contrast, a 
+simultaneous multipixel approach utilizing an optimized quantum probe state achieves a 
+total variance scaling of  |Δ𝜃|2≥(1+√𝑑)2𝑑
+4𝑁2. This provides an asymptotic 𝒪(𝑑) advantage 
+over the best separate estimation strategies in the Heisenberg limit  [1]. 
+ 
+ 
+ 
+ 
+ 
+Figure 3: The multiphase estimation scheme [1] 
+--- PAGE 11 ---
+  
+7 
+ 4 Chosen Method and Implementation  
+4.1 The Discretized Multipixel Framework  
+To investigate optimal input states for simultaneous multiparameter estimation, we 
+modeled  the electron microscope as a discreti zed 𝑑+1 mode Mach -Zehnder 
+interferometer. In our model, we distributed  𝑁 electrons across target signal modes 
+(representing the sample pixels) and one reference mode  [1]. 
+We defined our general pure input state |𝜓⟩ as a coherent superposition of all possible 
+configurations for distributing these 𝑁 particles. The total number of possible 
+configurations, 𝐷, is given by the combinations of placing indistinguishable particles into 
+distinct modes : 𝐷=(𝑁+𝑑)!
+𝑁!𝑑!. 
+We assigned a complex probability amplitude  𝛼𝑙 to each basis configuration (Fock state)  
+|𝑵𝑙⟩≜ |𝑁𝑙,0,…𝑁𝑙,𝑑⟩, so that overall,  we defined the input state as  written in equation  1: 
+1) Initial State  |𝜓⟩𝑖𝑛=∑𝛼𝑙|𝑵𝒍⟩𝐷
+𝑙=1  
+Where 𝑁𝑚,𝑘 represents the number of electrons passing through mode 𝑘 in configuration 
+𝑚. During the interaction stage, we treated the specimen as a multi -mode phase shifter. 
+We modeled the phase accumulation by applying a unitary transformation 𝑈𝜃 to the state, 
+where each signal mode acquired an independent phase  𝜃𝑚 corresponding to the local 
+properties of the sample at that specific pixel.  
+Overall, the evolved state is  given by: |𝜓⟩𝑜𝑢𝑡=𝑈𝜽|𝜓⟩𝑖𝑛=∑ 𝛼𝑙𝑒𝑖𝑵𝒍∙𝜽|𝑵𝒍⟩𝐷
+𝑙=1 . 
+4.2 Noise Modeling via Particle Loss  
+Because theoretical quantum states , especially those exhibiting optimal Heisenberg -
+limited scaling , are highly sensitive to losses , we needed to subject our multipixel phase 
+estimation framework to a realistic noise model.  
+We modeled  environmental noise strictly as a particle loss channel implemented via 
+beam -splitter interactions. We specifically chose to attribute this loss to mechanisms like 
+--- PAGE 12 ---
+  
+8 
+ high-angle scattering (e.g., Compton scattering).  We defined the loss using a 
+transmission parameter, 𝜂, scaling from 0 (complete loss) to 1 (perfect transmission). 
+Although we examined the complete range of 𝜂 values in our simulations,  we will focus  
+heavily on high transmission parameters in this report.  This is due to the  properties of 
+biological specimens in cryo -EM, which typically act as "weak phase objects". For these 
+samples, the probability of complete electron scattering is extremely low, meaning the 
+transmission parameter remains close to unity ( 𝜂≈1).  
+To thoroughly explore the noise landscape, we evaluated two extremes of environmental 
+loss, which we combined using a mixture parameter 𝑝: 
+1. Independent Loss ( 𝓔𝒔𝒆𝒑𝒆𝒓𝒂𝒕𝒆 ): We modeled  localized scattering events where 
+each spatial pixel (mode) lost particles to its own independent environmental 
+mode.  
+2. Correlated Loss ( 𝓔𝒊𝒏𝒕): We modeled  collective spatial losses where all pixels 
+interacted with a single, shared environmental mode.  
+We constructed the global noise channel transformation as a weighted sum of these two 
+extremes , as seen in equation 2: 
+2) The Chan nel  ℰ(𝜌)=𝑝ℰ𝑠𝑒𝑝𝑒𝑟𝑎𝑡𝑒 (𝜌)+(1−𝑝)ℰ𝑖𝑛𝑡(𝜌)  
+Where 𝜌 is the density matrix of the  state enteri ng the channels.  
+4.3 Numerical Implementation and Optimization  
+To find the optimal initial states under these noisy conditions, we implemented a 
+numerical simulation in Python utilizing the QuTiP (Quantum Toolbox in Python) library.  
+In our simulation workflow, we first generated the basis of the Fock space for the  𝐷 
+configurations  (equation 1) and defined their corresponding density matrices . We then 
+took that input state , passed it through the unitary phase -shift transformation  𝑈𝜃, and 
+subsequently applied our mixed environmental loss channel to compute the final output 
+density matrix, 𝜌𝑜𝑢𝑡. Thus, the output state is defined as: (equation 3) 
+3) Output State  𝜌𝑜𝑢𝑡=𝑝∙ℰ𝑠𝑒𝑝𝑒𝑟𝑎𝑡𝑒 (𝑈𝜃𝜌𝑖𝑛𝑈𝜃†)+(1−𝑝)∙ℰ𝑖𝑛𝑡(𝑈𝜃𝜌𝑖𝑛𝑈𝜃†)  
+The QFI matrix for mixed states is given by  [3]: (equation 4)  
+--- PAGE 13 ---
+  
+9 
+ 4) QFI Matrix  𝐼𝜽[𝑎,𝑏]= ∑2𝑅𝑒(⟨𝜆𝑖|𝜕𝑎𝜌|𝜆𝑗⟩⟨𝜆𝑗|𝜕𝑏𝜌|𝜆𝑖⟩)
+𝜆𝑖+𝜆𝑗𝑑
+𝑖,𝑗=0,𝜆𝑖+𝜆𝑗≠0  
+ 
+Where {𝜆𝑖}𝑖=0𝑑 are the state’s eigenvalues  and 𝜕𝑎𝜌 is the differentiation of the state 𝜌 with 
+respect to the phase 𝜃𝑎. 
+Our primary goal was to maximize the total amount of phase information we could extract 
+from the system. According to the Cramér -Rao Bound, minimizing  the trace of the 
+inverse -QFI matrix , 𝐼𝜃−1, directly minimizes the overall variance in our multiparameter 
+phase estimation. Therefore, we defined our optimization objective as described in 
+equation 5:  
+5) Optimization  Objective  min
+𝜶∈ℂ𝐷:||𝜶||=1𝑇𝑟[𝐼𝜃−1(𝜶,𝜂,𝑝,𝜃)]  
+ 
+By running this optimization across varying levels of independent and correlated noise, 
+we successfully mapped out which initial quantum states were most robust and provided 
+the highest theoretical resolution for a given electron dose.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- PAGE 14 ---
+  
+10 
+ 5 Results  
+5.1 Fundamental  Baselines  
+We executed our simulation using 𝑁=3 electrons distributed across 𝑑=2 signal modes 
+(yielding 3 total modes when including the reference). This setup resulted in 𝐷=10 
+possible configurations (Fock states).  To quantify the quantum advantage obtained by 
+our optimized states, we evaluated the maximized trace of the Quantum Fisher 
+Information (QFI) matrix against three fundamental baselines:  
+1. The Classical Limit (SQL):  The lowest  possible bound on the estimated phase 
+variance  achievable without quantum entanglement : |Δ𝜃|2≥𝑑2
+𝑁=4
+3≈1.33. For 
+𝑁=3,𝑑=2 
+2. The Independent Quantum Strategy:  The precision achieved by separately 
+estimating each of the 𝑑 phase s using optimal independent states that obtain the 
+Heisenberg Limit, scaling as |Δ𝜃|2≥𝑑∙(𝑁
+𝑑)−2
+= 𝑑3
+𝑁2=8
+9≈0.89. 
+3. The Multipixel  Quantum Limit:  The theoretical optimum  for simultaneous 
+multiparameter estimation  using optimal input states in a noiseless setup [1]: 
+|Δ𝜃|2≥(1+√𝑑)2𝑑
+4𝑁2 ≈0.27. The input state that achieves this bound is found in [1] to 
+be: (equation 6)  
+6) Reference State from [1] |𝜓⟩∗=1
+√1+√𝑑|0,0⟩+1
+√𝑑+√𝑑(|𝑁,0⟩+|0,𝑁⟩)  
+Where in our notation,  |𝑖,𝑗⟩ such that 𝑖+𝑗<𝑁 implies that 𝑁−𝑖−𝑗 electrons pass 
+through the reference mode.  
+5.2 Optimization Results  
+Focusing on the high -transmission regime, we plotted 𝑇𝑟[𝐼𝜃] vs. 𝑝 for the optimal states 
+for varying 𝜂 parameters, to quantify the amount of information on the unknown phases 
+these states hold. Furthermore, we compared the optimal state with the best Cramér -Rao 
+Bound  to the 3 baselines above , as seen in figures 4-7: 
+--- PAGE 15 ---
+  
+11 
+  
+Figure 4: Results for 𝜂=0.80 
+ 
+ 
+Figure 5: Results for 𝜂=0.90 
+Multipixel : ≈𝟎.𝟑𝟐 
+Multipixel : ≈𝟎.𝟑𝟐 
+--- PAGE 16 ---
+  
+12 
+  
+Figure 6: Results for 𝜂=0.95 
+ 
+ 
+Figure 7: Results for 𝜂=1.00 
+Multipixel : ≈𝟎.𝟑𝟐 
+Multipixel : ≈𝟎.𝟑𝟐 
+Best Opt: 𝟎.𝟑𝟐 
+--- PAGE 17 ---
+  
+13 
+ As shown in the figures above , for all transmission levels, our optimized states 
+successfully surpassed not only the classical SQL baseline across all values of  𝑝, but 
+also the Heisenberg Limit for independent pixel estimations . Furthermore, we noticed that  
+the optimal QFI results degrade monotonically as 𝑝 increases . We compared the results  
+to the CRB (eq uation  5) of the reference state  (equation 6)  in percentage,  in table 1:  
+                       Mixture  parameter  
+                                                      𝑝 
+ Transmission                                 
+ parameter 𝜂  𝑝=0 𝑝=0.5 𝑝=1 
+Max QFI  % of 
+Bound  Max QFI  % of 
+Bound  Max QFI  % of 
+Bound  
+𝜂=0.80 11.10  74.4% 9.65 64.7%  9.13 61.2%  
+𝜂=0.90 13.02  87.3%  12.18  81.6%  11.88  79.7%  
+𝜂=0.95 13.97  93.7%  13.52  90.6%  13.37  89.6%  
+𝜂=1.00 Results align with reference  to 14.91: 100% for all 𝑝 values  
+Table 1: Computation of 𝑇𝑟[𝐼𝜃(|𝜓⟩𝑖𝑛)]/𝑇𝑟[𝐼𝜃(|𝜓⟩∗)]∗ 100%  for varying 𝜂,𝑝 values  
+  
+In addition to optimizing the QFI for a constant 𝜂 over all modes, we examined the optimal 
+states for a  setup with varying 𝜂 over the different modes . Meaning, in this setup, 𝜼 is a 
+vector where 𝜂𝑖 represents the transmission parameter 𝜂 of mode 𝑖 (𝑖=0,1,…,𝑑). The 
+results are shown in figure 8:  
+ 
+Figure 8: Results for a spatial -varying transmission parameter 𝜼=(1.0,0.5) 
+Multipixel : ≈𝟎.𝟑𝟐 
+--- PAGE 18 ---
+  
+14 
+ For the setup described in figure 8, the optimal input state for all 𝑝 values is the same 
+state: |𝜓⟩=0.55|0,0⟩+0.56|0,3⟩+0.49|2,1⟩+0.37|3,0⟩. Interestingly, since the spatially 
+varying  𝜂 brakes the symmetry between the 𝑑 modes, the optimal state is not symmetrical.   
+Furthermore, we examined the performance of an arbitrary (not optimized) input state . for 
+this task , we chose the uniformly distributed superposition state:  
+|𝜓𝑖𝑛⟩=1
+√𝐷(|0,0⟩+|0,1⟩+|0,2⟩+|0,3⟩+|1,0⟩+|1,1⟩+|1,2⟩+|2,0⟩+|2,1⟩+|3,0⟩) 
+We computed its corresponding 𝑇𝑟[𝐼𝜃(𝜓𝑖𝑛)] and CRB  for 𝜂=0.9, as seen in figure 9:  
+ 
+Figure 9: 𝑇𝑟[𝐼𝜃(𝜓𝑖𝑛)] 𝑣𝑠.𝑝 and CRB for a non -optimized uniform superposition state  
+ 
+Multipixel : ≈𝟎.𝟑𝟐 
+--- PAGE 19 ---
+  
+15 
+ As demonstrated in figure 9, the multiparameter estimation results in an improvement 
+over the Heisenberg Limit even for a general, non -optimized input state in a noisy 
+environment.  
+Finally , we examined the optimal state s’ fidelity  across various 𝑝,𝜂 combinations  with the 
+reference state from equation 6 , as seen in figure 10: 
+ 
+Figure 10: |⟨𝜓𝑖𝑛|𝜓∗⟩|2 for the optimal states of varying (𝜂,𝑝) combinations  
+As expected, the optimized states have increasingly higher fidelity with the reference state 
+from equation 6  for increasing 𝜂 values, whereas for low transmission regimes the optimal 
+states differ significantly from the reference state.  
+ 
+ 
+
+--- PAGE 20 ---
+  
+16 
+ 6 Conclusions  
+6.1 Multipixel estimation dramatically improves resolution 
+for a given dose  
+Throughout this project, our primary constraint was the severe radiation dose limit 
+imposed by sensitive biological samples in transmission electron microscopy. To 
+overcome this, our specific objective was to numerically find and evaluate optimal 
+quantum i nput states that maximize extracted phase information under realistic, noisy 
+microscope conditions.  
+By evaluating the performance of these numerically optimized states across our 
+discretised model, we successfully demonstrated that simultaneous multipixel estimation 
+fundamentally outperforms classical strategies. Specifically, adapting our states to the 
+loss channel provided a robust variance advantage over both the classical Standard 
+Quantum Limit (SQL) and separate independent estimation strategies. Ultimately, we 
+confirmed that by actively optimizing correlated quantum states for a lossy environment, 
+we can extract significantly more phase information from the exact same number of 
+electrons, dramatically improving the allowable image resolution before beam -induced 
+damage occurs.  
+6.2 For 𝜼≥𝟎.𝟖,|𝝍⟩𝒊𝒏≈𝟎.𝟔𝟒|𝟎,𝟎⟩+𝟎.𝟓𝟒(|𝟑,𝟎⟩+|𝟎,𝟑⟩) is 
+optimal  
+Because typical biological specimens in cryo -EM act as "weak phase objects"  that impart 
+phase shifts with relatively low electron scattering , we focused our numerical optimization 
+heavily on the high -transmission regime. When running our simulations for transmission 
+parameters of  𝜂≥0.8, we found that our optimized initial states under realistic noise 
+exhibited an extremely high fidelity with the theoretical, noiseless optimum state ( equation 
+6). This specific superposition structure concentrates the probability amplitude into 
+configurations where either all particles remain in the reference mode, or all particles 
+bunch together into a single signal mode. The fact that this specific theoretical state 
+remained optimal even under a 20% chance of particle loss in our simulated channels 
+--- PAGE 21 ---
+  
+17 
+ validated our model, demonstrating that the ideal theoretical formulations are highly 
+practical and robust for standard biological imaging environments.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- PAGE 22 ---
+  
+18 
+ 7 Future Work  
+While our numerical model successfully demonstrated a quantum advantage under mixed 
+particle loss channels, we identified several avenues for expanding this framework toward 
+physical implementation. Based on our simulation results and the subsequent analys is 
+during our project reviews, we identified the following directions for future research:  
+7.1 Investigating the Correlation Between 
+Transmission and Phase  
+It is known that there is a correlation between an object’s transmission properties and the 
+phase accrued by it. Throughout our work, we noticed that perhaps investigating this 
+correlation could help finding more fitting and steady optimal input states that are tailored 
+to the specific specimen inspected.  
+7.2 Exploring Alternative Robust States  
+Our optimization algorithm actively searched for the absolute optimal states that 
+maximized the Quantum Fisher Information within the loss channels. However, we 
+proposed that future research should also explore other, more general initial states. 
+These sub optimal states might be mathematically or physically simpler to prepare in an 
+actual microscope, while still possessing  an advantage over single -parameter estimation 
+methods.  
+7.3 Applying Different Evaluation Metrics  
+To evaluate how the loss channel degraded our optimized states, we primarily calculated 
+their fidelity to the theoretical noiseless optimum. We concluded that future studies should 
+compare the optimized states using alternative distance measures and perfor mance 
+metrics beyond pure fidelity. Analyzing the states through different mathematical lenses 
+could yield deeper insights into their structural robustness under severe noise.  
+ 
+--- PAGE 23 ---
+  
+19 
+ 8 References  
+ 
+[1]  P. C. Humphreys, M. Barbieri, A. Datta and I. A. Walmsley, "Quantum Enhanced 
+Multiple Phase Estimation," Physical Review Letters, vol. 111, no. 7, p. 070403, 2013.  
+[2]  S. Even -Haim, E. Nussinson, R. Ben -Maimon, A. Gorlach, R. Ruimy, E. Shahmoon, 
+O. Schwartz and I. Kaminer, "Spin Squeezing in Electron Microscopy," Preprint, pp. 
+1-21, 2025.  
+[3]  J. Liu, H. Yuan, X. Lu and X. Wang, "Quantum Fisher information matrix and 
+multiparameter estimation," J. Phys. A: Math. Theor., vol. 53, no. 2, p. 023001, 2020.  
+ 
+ 
+ 
+ 
+ 
+ 
+  

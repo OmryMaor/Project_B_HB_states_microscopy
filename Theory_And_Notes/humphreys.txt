@@ -1,0 +1,432 @@
+Quantum Enhanced Multiple Phase Estimation
+Peter C. Humphreys, *Marco Barbieri, Animesh Datta, and Ian A. Walmsley†
+Department of Physics, Clarendon Laboratory, University of Oxford, Oxford OX1 3PU, United Kingdom
+(Received 1 April 2013; published 15 August 2013)
+We study the simultaneous estimation of multiple phases as a discretized model for the imaging of a
+phase object. We identify quantum probe states that provide an enhancement compared to the bestquantum scheme for the estimation of each individual phase separately as well as improvements overclassical strategies. Our strategy provides an advantage in the variance of the estimation over individualquantum estimation schemes that scales as OðdÞ, where dis the number of phases. Finally, we study the
+attainability of this limit using realistic probes and photon-number-resolving detectors. This is a problemin which an intrinsic advantage is derived from the estimation of multiple parameters simultaneously.
+DOI: 10.1103/PhysRevLett.111.070403 PACS numbers: 03.65.Vf, 42.30. /C0d, 42.50.Ex, 42.50.St
+Introduction.— Recent developments in quantum met-
+rology point to a new frontier of parameter estimation inwhich exploiting quantum states enables higher precisionthan can be achieved using only classical resources.Much of the work in this ﬁeld to date has been directed
+towards the estimation of a single Hamiltonian parameter.
+This has been explored both theoretically [ 1–13] and
+experimentally, with the estimation of optical phase shiftsby means of interferometry providing the dominant para-digm, in the setting of photonic systems as the leadingplatform [ 14–18].
+One of the most important metrology problems to the
+wider research community is that of microscopy and imag-
+ing. Producing a quantum advantage in imaging would be
+of signiﬁcant beneﬁt in ﬁelds such as biology, particularlyfor the imaging of samples that are sensitive to the totalillumination. Various approaches to quantum imaging havebeen proposed, typically exploring methods for increasingthe diffraction limited resolution of optical imaging sys-tems [ 19–25]. A recent classical investigation of quantum
+enhanced imaging made use of point estimation theory,
+quantifying differences between images by means of a
+single parameter [ 26]. However, imaging is inherently a
+multiparameter estimation problem, and deeper insightscan be gained by studying it as such.
+In this Letter, we consider a discretized model for phase
+imaging based on this approach. Phase imaging is a corner-stone of optical microscopy, typically realized using therelated techniques of phase contrast and differential inter-
+ference contrast imaging [ 27], that allows differences in
+refractive index to be detected in otherwise transparentmedia. So far, the potential for quantum enhancements tothese techniques has yet to be explored. Our approachmaps phase imaging onto the problem of multiple simul-taneous phase estimation.
+Our results provide a strategy for the estimation of
+multiple phases using correlated quantum states, in which
+the multiparameter nature of the problem leads to an intrinsic
+beneﬁt when exploiting quantum resources. A surprisingoutcome of our analysis is that our quantum strategy provides
+anOðdÞadvantage, where dis the number of phases, over the
+optimal quantum individual estimation scheme of usingN00Nstates [ 7]. We further show that a resource advantage
+can be provided over the best classical phase estimation
+schemes.
+Phase imaging.— We adopt a discretized model of phase
+imaging, in which we address the question of how to esti-matedindependent phases most efﬁciently with Nphotons.
+We note that earlier works have explored other aspects ofmultiple parameter estimation from a quantum informationperspective. In the case of the estimation of parameterscharacterizing a set of noncommuting unitary operations,
+it was shown that entangled states and measurements can
+attain the Heisenberg limit in the number of photons used ineach probe state [ 28–30]. In the commuting case, the prob-
+lem of estimating dphases with an ensemble of single-
+photon probe states has been considered. A Bayesianapproach showed that the cost of estimation increases withthe number of parameters involved [ 31], and a Fisher infor-
+mation based approach showed that entangling two multi-
+level systems provides no advantage over using a single
+multilevel system [ 32]. More recently, the error associated
+with estimating two phases using three and four modeinterferometers (and three and four photons, respectively)has been investigated [ 33].
+We now turn to the general case of determining multiple
+independent phases by distributing Nphotons across a
+probe state in an optimal manner. Our discretized phase
+imaging model consists of a dþ1-mode interferometer
+with a preparation, an interaction, and a measurement stageas in Fig. 1. The preparation stage creates an arbitrary pure
+input state of the form
+j
+ci¼XD
+k¼1/C11kjNk;0;Nk;1; ::N k;di/C17XD
+k¼1/C11kjNki:(1)
+The distribution of photons in a given conﬁguration k
+is expressed compactly by a vector Nk, composed ofPRL 111, 070403 (2013) PHYSICAL REVIEW LETTERSweek ending
+16 AUGUST 2013
+0031-9007 =13=111(7) =070403(5) 070403-1 /C2112013 American Physical Society
+individual components Nk;mthat give the number of pho-
+tons in mode m, such thatPd
+m¼0Nk;m¼N.D¼
+ðNþdÞ!=N!d!is the number of distinct conﬁgurations of
+distributing Nphotons across dþ1modes. Exploiting the
+global phase freedom of the problem, we choose the mode
+labeled 0 as our reference mode and therefore, the modesregistering the phases are labeled f1;...;dg. To each of
+these conﬁgurations, we associate a complex amplitude /C11
+k.
+The state is normalized by requiring thatPD
+k¼1j/C11kj2¼1.
+The input state acquires a phase through the unitary
+transformation U/C18¼eiPd
+m¼1^Nm/C18m, where /C18mis the phase
+accrued and ^Nmthe number operator for mode m.
+Denoting /C18¼f/C181;...;/C18dg, the evolved state is given by
+jc/C18i¼U/C18jci¼XD
+k¼1/C11keiNk/C1/C18jNki: (2)
+The precision of the estimate of /C18, governed by its
+covariance matrix Covð/C18Þ, is lower bounded via the the
+quantum Crame ´r-Rao bound (QCRB) [ 34]
+Covð/C18Þ/C21ðMI/C18Þ/C01; (3)
+where I/C18is the quantum Fisher information (QFI) matrix
+andMis the classical contribution from repeating the
+experiment [ 35]. This is a d/C2dsized matrix inequality
+which is satisﬁed when Covð/C18Þ/C0ðMI/C18Þ/C01is a positive
+matrix. The QFI matrix is deﬁned as [ 34,36]
+½I/C18/C138l;m¼1
+2hc/C18jðLlLmþLmLlÞjc/C18i; (4)
+where the operators Lmare called symmetric logarithmic
+derivatives, deﬁned for pure states by
+L/C18l¼2ðj@/C18lc/C18ihc/C18jþjc/C18ih@/C18lc/C18jÞ: (5)
+We show in Supplemental Material Section I [ 37] that the
+QFI matrix associated with the estimation of the phases inour interferometer is
+I
+/C18¼4X
+ij/C11ij2NiNT
+i/C04X
+i;jj/C11ij2j/C11jj2NiNT
+j: (6)
+For this Letter, we consider only the ideal case of
+pure states. In this case, the bound is guaranteed to besaturated if the condition Im½h
+c/C18jLlLmjc/C18i/C138 ¼ 0issatisﬁed, which is true in our case for all l,m, and /C18
+[38]. Thus, the QCRB can be saturated for the estimation
+of multiple phases simultaneously given the input states
+we study in Eq. ( 1).
+Since we are interested in purely quantum enhance-
+ments, we henceforth set M¼1in Eq. ( 3). Then taking
+the trace of both sides gives a lower bound on the totalvariance of all the phases estimated
+j/C1/C18j
+2/C17Xd
+m¼1/C14/C182m/C17Tr½Covð/C18Þ/C138 /C21 Tr½I/C01
+/C18/C138:(7)
+The saturation of the matrix QCRB implies a saturation of
+the above inequality, and in the rest of this Letter, we willbe concerned with minimizing j/C1/C18j
+2.
+Optimal probe states.— It is well-known that the best
+quantum probe of Nphotons for estimating a single phase
+is the N00Nstate which saturates the corresponding QCRB
+and attains the Heisenberg limit of j/C1/C18j2¼1=N2[7]. The
+origin of this scaling is the number variance for the twomodes, which scales as N
+2. Based on this intuition, we
+consider a generalization in which our quantum probe is acoherent superposition of Nphotons in one of the modes
+and none in any of the other dmodes. Due to the symmetry
+of our problem over the dmodes in which we choose to
+estimate the phases, we consider the quantum probe
+j
+ci¼/C11ðj0;N;...;0;0iþj 0;0;...;N;0iþ/C1/C1/C1
+þj0;0;...;0;NiÞ þ/C12jN;0;...;0;0i; (8)
+such that d/C112þ/C122¼1. For these states, the QFI matrix
+can be found using Eq. ( 6). As the QFI only depends on the
+amplitude of /C11and/C12, we assume that they are real without
+loss of generality. Under this assumption, /C12is uniquely
+determined by the normalization condition and is, there-fore, no longer an independent variable,
+½I
+/C18/C138l;m¼4N2ð/C14l;m/C112/C0/C114Þ: (9)
+The minimum total variance in Eq. ( 7) can be found by
+minimizing Tr½I/C01
+/C18/C138via differentiation with respect to /C11,
+j/C1/C18sj2¼ð1þﬃﬃﬃ
+dp
+Þ2d=4
+N2; (10)
+for/C11¼1=ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+dþﬃﬃﬃ
+dpp
+. We label this state as jcsi. This
+bound should now be compared to the variance of estimat-ing the dphases /C18using dseparate interferometers inde-
+pendently. Assuming for simplicity that dis a factor of N
+[39], the best quantum strategy uses N00Nstates with a
+maximum of N=d photons, with a variance of d
+2=N2for
+each phase. Then, the total variance for this approach is
+j/C1/C18indj2¼d3=N2. In a classical strategy where the probe
+is restricted to uncorrelated coherent states of the form
+/C10d
+i¼1j/C11ii, such thatPd
+i¼1h/C11ij^Nij/C11ii¼N, the total variance
+isj/C1/C18clasj2¼d2=N.θ1
+θdθ2Preparation
+Measurement
+FIG. 1 (color online). Discretized phase imaging model. We
+consider the simultaneous estimation of dphases using a setup
+consisting of state preparation (green), independent phase appli-
+cation in each mode (blue), and state measurement (purple).PRL 111, 070403 (2013) PHYSICAL REVIEW LETTERSweek ending
+16 AUGUST 2013
+070403-2
+As expected, both the quantum strategies follow the
+Heisenberg scaling in the total number of photons forthe total variance. However, the quantum simultaneous
+strategy has an additional advantage over the others.
+Comparing the three bounds, we ﬁnd
+j/C1/C18
+sj2/C20j/C1/C18indj2/C20j/C1/C18clasj2; (11)
+where the ﬁrst inequality is strict for d> 1, and the second
+ford<N . As typical instances would consist of many
+more photons than the number of parameters to be esti-mated, we are guaranteed that our strategy of simultaneousquantum estimation is better than individual estimation.Furthermore, the advantage, shown in Fig. 2, over the best
+quantum strategy of independent estimation improves lin-
+early with the number of phases, scaling as 1=4d. This is
+our main result.
+The advantage of simultaneous quantum phase estima-
+tion is OðdÞ[40], and one might wonder if this is the
+maximum possible advantage that can be obtained byquantum probes of the form Eq. ( 1). We do not have an
+analytic proof that this is the case, and numerical searchesare hampered by the unfavorable scaling in the number of
+state conﬁgurations D, since in the limit of large N,d, this
+isD/C242
+ðNþdÞS, where Sis the binary Shannon entropy of
+d=ðNþdÞ. We have, however, performed a numerical
+optimization to ﬁnd the states with the minimal totalvariance in the parameter ranges d¼1:6,n¼1:6and
+found that the optimal states always have the form in
+Eq. ( 8).
+The deﬁnition of a trial is central for a proper account-
+ing of resources and therefo re for identifying any quan-
+tum advantages. We have deﬁned a trial to consist of acomplete characterization of all dphases using Npho-
+tons. Alternative deﬁnitions can be considered, such aswhen a trial simply consists of a single illumination of the
+sample with Nphotons, with freedom to use these pho-
+tons differently in each trial. In the latter case, an alter-native strategy of using all Nphotons to estimate a single
+phase in a given trial, switching through the phases to beestimated in each trial, can also produce an Oðd
+2Þscaling
+in the variance. Now, however, Ndphotons are required in
+order to provide one set of estimates for the phases, this
+will lead to dfewer trials per phase, and therefore, a factor
+1=dslower convergence to the Crame ´r-Rao bound.
+Optimal measurements.— We now turn to the problem of
+identifying measurements that can realize the quantumadvantages in multiphase estimation. Although we knowthat the QRCB can be saturated in principle, it is importantto identify the measurements that allow us to do so inpractice. In Supplemental Material Section II [ 37], we
+consider positive-operator-valued measurement (POVM)
+sets in which one element is a projection onto the probestate after transformation by the interferometer with phases/C18
+s. We show that these sets saturate the QCRB at this
+speciﬁc point in parameter space, and that the associatedclassical Fisher information matrix is equal to the QFImatrix.
+One such construction, for the probe j
+cwi, is given by
+/C5¼f j/C7lih/C7ljg, where j/C7li¼P
+m/C7l;mjN0miandjN0miis
+the conﬁguration with Nphotons in mode mand no
+photons in any other mode. The component amplitudesare given by
+/C7
+l;m¼8>>>><
+>>>>:ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+ðl/C01Þ!
+ðlþ1Þ!q
+;m /C20l/C01;
+/C0ﬃﬃﬃﬃﬃﬃ
+l
+lþ1q
+;m ¼l;
+0;m > l ;(12)
+forl¼1;...;dandm¼0;...;d. The additional l¼0
+state is given by /C70;m¼1=ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+dþ1p
+. This set saturates the
+QFI for /C18s¼0. An explicit construction for d¼3is
+shown in Table 1 in the Supplemental Material Section II[37]. A similar set of projectors can also be obtained for the
+optimal state given by Eq. ( 8).
+As can be seen, the probability p
+l¼j hcwj/C7lij2associ-
+ated with each outcome is transparently related to the
+phases, with p1involving only /C181,p2only/C181,/C182, and so
+on. This suggests that an estimator could be easily createdthat would allow one to determine the probability distribu-tion for the phases given a set of experimental outcomes.
+Realistic probes and measurements.— The optimal
+probe states and measurements involve quantum correlatedstates that may be challenging to implement in practice.In this section, we present examples of probe states that
+may be relatively easier to prepare, and show the enhance-
+ments predicted earlier are achievable using realisticmeasurements.
+For single parameter estimation, it was shown that the
+Holland-Burnett (HB) state [ 1,10], generated by interfer-
+ing two pure Nphoton states on a 50=50beam splitter, can
+also lead to a 1=N
+2Heisenberg scaling in estimation. This
+state is signiﬁcantly easier to generate than the ideal N00N
+state since it does not rely on the use of optical nonlinear
+interactions or quantum gates. Further, these states are also1 2 3 4 5 6 7 80.0 1.0 2.0 
+N00N States
+Classical States
+Number of phases (d)Total variance
+FIG. 2 (color online). Strategies for multiple phase estimation
+using N¼16photons. The red line gives the total variance
+j/C1/C18sj2for the quantum simultaneous strategy using the states
+jcsi, the blue dashed line gives the variance j/C1/C18indj2achievable
+using N00Nstates, and the cyan dashed line gives the variance
+j/C1/C18clasj2for an equivalent classical state.PRL 111, 070403 (2013) PHYSICAL REVIEW LETTERSweek ending
+16 AUGUST 2013
+070403-3
+known to be close to optimal with respect to losses in the
+quantum sensor.
+We consider a multimode generalization of these states,
+generated by means of Fourier multiport devices that imple-
+ment a quantum Fourier transform (QFT) [ 18,33,41], for
+two modes this is equivalent to a 50=50beam splitter. As in
+the creation of HB states, nphotons are input into each
+mode of the QFT device, leading to an N¼nðdþ1Þ
+photon state output, that we denote HBðn; dÞ. This state is
+then used for phase estimation. Our results include as aspecial case, recent work by Spagnolo et al. [33] which
+explored the QFI associated with this device for the speciﬁccase of d¼2, 3 with n¼1.
+Figure 3shows numerical calculations of the expected
+variance of estimation for these states, calculated from the
+QCRB [Eq. ( 7)]. Our calculations suggest that the HBð1;dÞ
+states give the closest performance to the probe j
+csi
+previously considered. As the number of photons inputinto each mode is increased, the variance of estimationmoves away from that achievable using j
+csi, and
+approaches the error for simultaneous phase estimationusing N00Nstates. The observed decrease in performance
+of the HBðn; dÞstate is because the probability amplitude
+associated with the terms in which the photons are highly
+bunched in one mode decreases signiﬁcantly with nandd
+[42], and it is these terms that are most sensitive to the
+phases in the interferometer. It is also this property,however, that ensures that these states are robust against
+loss in the single phase case [ 10], something that is not a
+property of the N00Nstates. The degree to which multi-
+phase estimation can be loss tolerant is not yet known.
+Although HBðn; dÞstates do not perform as well
+as comparable j
+csiprobe states, they do at least as well
+asN00Nstates, which are just as challenging to prepare
+asjcsistates. The ease of experimental generation of
+multimode HB states may make them an attractive candi-date for multiple phase estimation protocols. This isparticularly the case for n¼1states, which could be
+produced using heralded single photons, and demonstrate
+the best comparative performance over N00Nstates of the
+same photon number.
+In addition to the challenges of optimal state prepara-
+tion, the optimal measurements involve projections onto
+complex multiphoton states, and thus, they they may not beexperimentally feasible. It is therefore important to showthat an experimentally realistic measurement schemeexists that can achieve or approach the QCRB. We calcu-lated numerically the variance of the phase estimationgiven by the classical Fisher information for HBðn; dÞ
+states using a detection scheme in which the differentmodes are combined using a balanced Fourier multiportdevice, followed by ideal photon-number-resolving detec-tors (PNRD). Since the probability of different combina-tions of detector outcomes depends on the phases, amaximum likelihood scheme could in principle be used
+to estimate the phases given a set of measured detector
+outcomes. As the accuracy of estimation is dependent onthe value of /C18, numerical optimization over the phases was
+used determine the minimum possible error. Calculationswere carried out for the multimode HBð1;dÞstates [the
+class of HBðn; dÞstates that exhibited the best perform-
+ance], and are shown in Fig. 3(b). The calculated variance
+is comparable to the QFI, and below that achievable usingN00Nstates.
+Conclusions.— Our analysis of imaging as a multipara-
+meter estimation problem presents an alternative approachto the typical methods based on enhancing diffractionlimits, and may be of interest for other quantum enhancedimaging problems. In addition, our results should be ofwide interest as many problems, such as strain sensing,range ﬁnding, and gravitational wave detection can be
+recast as optical phase estimation [ 43]. They should also
+motivate an investigation into the nature of the quantumresources at the root of the enhancement shown.
+We thank J. Nunn, M. D. Vidrighin, B. Metcalf, J.
+Spring, and W. S. Kolthammer for helpful discussionsand comments on the manuscript. This work was supportedby the Engineering and Physical Sciences ResearchCouncil (EP/H03031X/1), the European Commissionproject Q-ESSENCE (248095), and the Air Force Ofﬁceof Scientiﬁc Research (European Ofﬁce of AerospaceResearch and Development).1 2 3 4 5 60.0 2.0 4.0 
+Number of phases (d)4 8 12 160.0 1.0 2.0 
+HB(n,4)
+Number of photons (4n)Total variance(a)
+(b)
+Total varianceHB(1,d)N00N States
+FIG. 3 (color online). (a) Realistic probes: The green line
+gives numerical calculations of the total variance from the
+QCRB for the simultaneous estimation of 4 phases using
+HBðn;4Þstates as a function of n. For comparison, the blue
+and red dashed lines give the QCRB for equivalent N00Nand
+jcsistates, respectively. (b) Realistic measurements: The green
+dots show the total variance for the simultaneous estimation of d
+phases using a HBð1;dÞstate and a measurement apparatus
+consisting of a Fourier multiport followed by PNRDs. The green
+line gives the QCRB variance error for the same HBð1;dÞstate,
+while the blue and red dashed lines again give the QCRB forequivalent N00Nandj
+csistates, respectively.PRL 111, 070403 (2013) PHYSICAL REVIEW LETTERSweek ending
+16 AUGUST 2013
+070403-4
+*Corresponding author.
+peter.humphreys@physics.ox.ac.uk
+†Corresponding author.i.walmsley1@physics.ox.ac.uk
+[1] M. J. Holland and K. Burnett, Phys. Rev. Lett. 71, 1355
+(1993) .
+[2] J. J. Bollinger, W. M. Itano, D. J. Wineland, and D. J.
+Heinzen, Phys. Rev. A 54, R4649 (1996) .
+[3] V. Giovannetti, S. Lloyd, and L. Maccone, Nature
+(London) 412, 417 (2001) .
+[4] V. Giovannetti, S. Lloyd, and L. Maccone, Phys. Rev. Lett.
+96, 010401 (2006) .
+[5] A. S. Holevo, Probabilistic and Statistical Aspects of
+Quantum Theory (North-Holland, Amsterdam, 1982).
+[6] S. L. Braunstein and C. M. Caves, Phys. Rev. Lett. 72,
+3439 (1994) .
+[7] H. Lee, P. Kok, and J. P. Dowling, J. Mod. Opt. 49, 2325
+(2002) .
+[8] U. Dorner, R. Demkowicz-Dobrzanski, B. J. Smith, J. S.
+Lundeen, W. Wasilewski, K. Banaszek, and I. A.Walmsley, Phys. Rev. Lett. 102, 040403 (2009) .
+[9] M. G. Genoni, S. Olivares, D. Brivio, S. Cialdi, D.
+Cipriani, A. Santamato, S. Vezzoli, and M. G. A. Paris,Phys. Rev. A 85, 043817 (2012) .
+[10] A. Datta, L. Zhang, N. Thomas-Peter, U. Dorner, B. J.
+Smith, and I. A. Walmsley, Phys. Rev. A 83, 063836 (2011) .
+[11] G. M. D’Ariano and M. G. A. Paris, Phys. Rev. A 55, 2267
+(1997) .
+[12] G. D’Ariano, C. Macchiavello, and M. Sacchi, Phys. Lett.
+A248, 103 (1998) .
+[13] J. So ¨derholm, G. Bjo ¨rk, B. Hessmo, and S. Inoue, Phys.
+Rev. A 67, 053803 (2003) .
+[14] M. W. Mitchell, J. S. Lundeen, and A. M. Steinberg,
+Nature (London) 429, 161 (2004) .
+[15] T. Nagata, R. Okamoto, J. L. O’brien, K. Sasaki, and S.
+Takeuchi, Science 316, 726 (2007) .
+[16] I. Afek, O. Ambar, and Y. Silberberg, Science 328, 879
+(2010) .
+[17] H. Yonezawa, D. Nakane, T. A. Wheatley, K. Iwasawa, S.
+Takeda, H. Arao, K. Ohki, K. Tsumura, D. W. Berry, T. C.
+Ralph, H. M. Wiseman, E. H. Huntington, and A.
+Furusawa, Science
+337, 1514 (2012) .
+[18] A. Vourdas and J. A. Dunningham, Phys. Rev. A 71,
+013809 (2005) .
+[19] V. Giovannetti, S. Lloyd, L. Maccone, and J. Shapiro,
+Phys. Rev. A 79, 013827 (2009) .
+[20] E. Brainis, Opt. Express 19, 24 228 (2011) .
+[21] O. Schwartz and D. Oron, Phys. Rev. A 85, 033812
+(2012) .
+[22] F. Guerrieri, L. Maccone, F. N. C. Wong, J. H. Shapiro, S.
+Tisa, and F. Zappa, Phys. Rev. Lett. 105, 163602 (2010) .[23] G. Brida, M. Genovese, and I. R. Berchera, Nat. Photonics
+4, 227 (2010) .
+[24] M. Tsang, Phys. Rev. Lett. 102, 253601 (2009) .
+[25] H. Shin, K. W. C. Chan, H. J. Chang, and R. W. Boyd,
+Phys. Rev. Lett. 107, 083603 (2011) .
+[26] C. A. Pe ´rez-Delgado, M. E. Pearce, and P. Kok, Phys. Rev.
+Lett. 109, 123601 (2012) .
+[27] C. Preza, D. L. Snyder, and J. A. Conchello, J. Opt. Soc.
+Am. A 16, 2185 (1999) .
+[28] H. Imai and A. Fujiwara, J. Phys. A 40, 4391 (2007) .
+[29] A. Fujiwara, Phys. Rev. A 65, 012316 (2001) .
+[30] M. A. Ballester, Phys. Rev. A 69, 022303 (2004) .
+[31] C. Macchiavello, Phys. Rev. A 67, 062302 (2003) .
+[32] M. A. Ballester, Phys. Rev. A 70, 032310 (2004) .
+[33] N. Spagnolo, L. Aparo, C. Vitelli, A. Crespi, R. Ramponi,
+R. Osellame, P. Mataloni, and F. Sciarrino, Sci. Rep. 2,
+862 (2012) .
+[34] C. Helstrom, Quantum Detection and Estimation Theory,
+Mathematics in Science and Engineering (Academic
+Press, Massachusetts, 1976).
+[35] In this multiparameter scenario, a single trial has to
+necessarily consist of an estimate of all dphases.
+[36] M. G. A. Paris, Int. J. Quantum. Inform. 07, 125 (2009) .
+[37] See Supplemental Material at http://link.aps.org/
+supplemental/10.1103/PhysRevLett.111.070403 for
+additional details on calculations presented in themanuscript, including a derivation of the QFI for
+simultaneous phase estimation and a proof of the
+saturation of the QFI by the optimal measurement
+construction.
+[38] K. Matsumoto, J. Phys. A 35, 3111 (2002) .
+[39] For cases in which dis not a factor of N, we show in the
+Supplemental Material Section III [ 37] that this is a
+conservative estimate, since it underestimates the mini-
+mum error achievable using Nphotons.
+[40] The linear advantage in joint estimation provided by this
+quantum probe state is not unique. Setting /C11¼/C12¼
+1=ﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃﬃ
+dþ1p
+in Eq. ( 8) provides a slightly different probe
+state j
+cwithat has a total variance of j/C1/C18j2¼
+dðdþ1Þ=2N2, providing a scaling enhancement of
+1=2d. In an actual experiment, it may be easier to produce
+this balanced probe state, in which the phase and reference
+mode amplitudes are the same. This state preserves the
+OðdÞscaling improvement over individual phase estima-
+tion and provides a total variance within a factor of 2 of
+that of the optimal state for large d.
+[41] Y. L. Lim and A. Beige, Phys. Rev. A 71, 062311 (2005) .
+[42] M. C. Tichy, M. Tiersch, F. Mintert, and A. Buchleitner,
+New J. Phys. 14, 093015 (2012) .
+[43] V. Giovannetti, S. Lloyd, and L. Maccone, Nat. Photonics
+5, 222 (2011) .PRL 111, 070403 (2013) PHYSICAL REVIEW LETTERSweek ending
+16 AUGUST 2013
+070403-5

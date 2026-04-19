@@ -1,0 +1,184 @@
+--- PAGE 1 ---
+Final Presentation
+Quantum Enhanced Electron 
+Microscopy
+Students: Omry Maor, Ori Yehoshua 
+Supervisor: Shiran Even -Haim
+Semester: Spring,  2025
+Date: 22/01/26 
+--- PAGE 2 ---
+Outline
+•Motivation &Goal
+•Background: Quantum Metrology & QFI 
+•Literature Survey: Spin Squeezing and single -parameter limitations
+•Chosen Solution: Multipixel phase estimation
+•Results: State optimization under mixed noise
+•Conclusions &Future Work
+2
+--- PAGE 3 ---
+Image Precision vs. Radiation Damage
+•Efficient microscopy is a critical requirement across various scientific fields
+•Transmission Electron Microscopes:
+ + Achieve atomic resolution
+ - Highly limited by beam -induced damage
+3
+
+--- PAGE 4 ---
+Our Goal: Maximize Resolution Under A Finite Dose
+•Maximally utilize information for a given dose
+–Classical Limit (SQL): Δ𝜙≥1
+𝑁
+–Heisenberg Limit: Δ𝜙≥1
+𝑁
+4
+--- PAGE 5 ---
+The Method
+•Explore techniques for quantum enhanced EM
+•Learn about current theoretical solutions
+•Implement a realistic noisy setup
+•Analyze the optimized results 
+5
+--- PAGE 6 ---
+Literature Survey: Spin Squeezing Techniques
+•Redistributes uncertainty via entanglement, beating the 1
+𝑁 limit
+•Two main methods: Interaction -Based & Measurement -Based
+7
+
+--- PAGE 7 ---
+So, is Spin Squeezing optimal for our goal?
+⁺High robustness against electron loss
+⁺Feasible with existing microscope tech
+⁻Optimized for single -parameter phase estimation
+8
+--- PAGE 8 ---
+Chosen Solution: Multipixel Phase Estimation
+[1]•Imaging is inherently a multiparameter estimation problem
+•Preparation: 𝑁 particles distributed across 𝑑+1 modes
+•Interaction: Signal modes acquire 𝑑 independent phases
+•Measurement: Maps accumulated phases to an image
+•For pure states: Δ𝜃𝑜𝑝𝑡2=1+𝑑2𝑑
+4𝑁2 [1]
+•𝒪𝑑 advantage over 𝑑 separate estimation
+9
+
+--- PAGE 9 ---
+Multipixel Phase Estimation - Preparation
+•A general pure input state
+𝜓=෍
+𝑙=1𝐷
+𝛼𝑙|𝑁𝑙,0,…𝑁𝑙,𝑑⟩≡෍
+𝑙=1𝐷
+𝛼𝑙𝑵𝒍
+•Distributes 𝑁 particles across 𝑑+1 modes
+•𝐷=𝑁+𝑑!
+𝑁!𝑑! configurations
+10
+--- PAGE 10 ---
+Example for 𝑁=3,𝑑=2⟹𝐷=10
+11
+
+--- PAGE 11 ---
+Multipixel Phase Estimation – Interaction
+•Sample acts as a multi -mode phase shifter
+•Each mode applies the unitary transformation 𝑈𝜽=𝑒𝑖σ𝑚=0𝑑෡𝑁𝑚𝜃𝑚
+•𝜽=𝜃0,𝜃1,…,𝜃𝑑 are the phases accrued by the modes
+•The evolved state:
+𝜓𝜽=𝑈𝜽𝜓=෍
+𝑙𝐷
+𝛼𝑙𝑒𝑖𝑵𝒍∙𝜽𝑵𝒍
+12
+--- PAGE 12 ---
+Multipixel Phase Estimation – Measurement
+[2]
+[1]•QFI matrix 𝐼𝜃 quantifies available phase information
+•Precision bounded by Cramér -Rao Bound: 𝐶𝑜𝑣𝜽≥𝑀𝐼𝜽−1
+•Taking the trace (with 𝑀=1): Δ𝜽≡𝑇𝑟𝐶𝑜𝑣𝜽≥𝑇𝑟𝐼𝜽−1
+•𝐼𝜃 for pure states [2]
+𝐼𝜃=4෍
+𝑖𝛼𝑖2𝑵𝑖𝑵𝑖𝑇−4෍
+𝑖,𝑗𝛼𝑖2𝛼𝑗2𝑵𝑖𝑵𝑗𝑇
+•Solution: A 𝑁00𝑁 state [1]: 
+𝜓𝑜𝑝𝑡=𝛽𝑁,0,…0+𝛼(|0,𝑁,…,0⟩+⋯+|0,0,…𝑁⟩)
+13
+--- PAGE 13 ---
+Reality is Noisy
+•The described method assumes noiseless probes
+•Real microscopes suffer from loss
+•This implies a possible different solution than the 𝑁00𝑁 state
+•Our work: Optimizing for mixed -noise channels
+14
+--- PAGE 14 ---
+Implementation: Realistic Noise Modeling
+•Model: Particle loss via beam splitter interaction
+•Transmission parameter 𝜂 scales from 0 to 1
+•The global channel transformation:
+ℰ𝜌=𝑝ℰ𝑖𝑛𝑑𝜌+1−𝑝ℰ𝑖𝑛𝑡𝜌
+•ℰ𝑖𝑛𝑑: Independent particle loss 
+•ℰ𝑖𝑛𝑡: Interaction -correlated loss
+•Parameter 𝑝 balances noise source distribution 
+15
+--- PAGE 15 ---
+Realistic Noise Modeling: Illustration
+16
+--- PAGE 16 ---
+Numerical Implementation & Workflow
+17[2]•Basis: Fock space of 𝐷 configurations
+•𝜌𝑜𝑢𝑡=𝑝∙ℰ𝑖𝑛𝑑𝑈𝜽𝜌𝑖𝑛𝑈𝜽†+1−𝑝∙ℰ𝑖𝑛𝑡𝑈𝜽𝜌𝑖𝑛𝑈𝜽†
+•𝐼𝜃 for non pure states [2]
+𝐼𝜽𝑎,𝑏=෍
+𝑖,𝑗=0,𝜆𝑖+𝜆𝑗≠0𝑑−12𝑅𝑒𝜆𝑖𝜕𝑎𝜌𝜆𝑗𝜆𝑗𝜕𝑏𝜌𝜆𝑖
+𝜆𝑖+𝜆𝑗
+•Optimal coefficients of 𝜌𝑖𝑛
+min
+𝜶∈ℂ𝐷∶𝜶=1−𝑇𝑟𝐼𝜽𝜶,𝜂,𝑝,𝜽
+--- PAGE 17 ---
+Results - 𝑁=3,𝑑=2,𝜂=0.2
+18
+
+--- PAGE 18 ---
+Results - 𝑁=3,𝑑=2,𝜂=0.4
+19
+
+--- PAGE 19 ---
+Results - 𝑁=3,𝑑=2,𝜂=0.6
+20
+
+--- PAGE 20 ---
+Results - 𝑁=3,𝑑=2,𝜂=0.75
+21
+
+--- PAGE 21 ---
+Results - 𝑁=3,𝑑=2,𝜂=0.95
+22
+
+--- PAGE 22 ---
+Fidelity with 𝜓=1
+3(0,0+3,0+0,3)
+231.00: Full Fidelity
+0.67:1
+2(3,0+0,3)
+𝑂𝑟𝑡ℎ𝑜𝑔𝑜𝑛𝑎𝑙
+
+--- PAGE 23 ---
+Conclusion s
+•Multipixel  estimation dramatically improves resolution for a given dose
+•For 𝜂≥0.6, 𝜓≈1
+3(0,0+3,0+|0,3⟩) is optimal
+•Quantum  Advantage:  Precision  beats  SQL even  at 80% loss
+24
+--- PAGE 24 ---
+Future Work
+•Scaling: Increase 𝑁 and 𝑑 using GPU -accelerated computing
+•Explore methods  to prepare  optimal  W-states
+•Model  validation against  real scattering data
+25
+--- PAGE 25 ---
+References
+1.P . C. Humphreys, M. Barbieri, A. Datta, and I. A. Walmsley, "Quantum 
+Enhanced Multiple Phase Estimation," Phys. Rev. Lett. , vol. 111, no. 7, 
+p. 070403 , Aug. 2013 .
+2.J. Liu, H. Yuan, X. Lu, and X. Wang, "Quantum Fisher information matrix 
+and multiparameter estimation," J. Phys. A: Math. Theor. , vol. 53, no. 2, 
+p. 023001 , Jan. 2020 , doi: 10.1088 /1751 -8121 /ab5d4d.
+26
