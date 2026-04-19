@@ -91,4 +91,50 @@ We establish analytical values:
 \section*{Cell 5: Global Execution Block}
 Combines states from Cell 3, evaluates grids from Cell 2 traces spanning ranges of independent vs shared mixtures ($p$) and tracks plotting maps from Cell 4 automatically to visualize exactly evaluated footprints. Initial calculations compute exactly $Fidity = |\langle \psi_{HB} | \psi_{s} \rangle|^2 $.
 
+\section*{Cell 6: QCRB Under Photon Loss — Humphreys Fig 3 Replication}
+
+This section replicates the core results of Humphreys et al.\ Figure 3, evaluating the performance of HB states under realistic photon-loss noise modelled by the Kraus operator formalism.
+
+\subsection*{6.1 Loss Model: Kraus Operators}
+Each signal mode $j \in \{1, \ldots, d\}$ is subjected to an independent amplitude-damping channel with transmission probability $\eta$. The Kraus operators are:
+\begin{equation}
+    E_k = \sum_{n=k}^{D-1} \sqrt{\binom{n}{k}} \, \eta^{(n-k)/2} \, (1-\eta)^{k/2} \, |n-k\rangle\langle n|, \quad k = 0, 1, \ldots, D-1
+\end{equation}
+The output state after loss on all $d$ signal modes (mode 0, the reference, is lossless):
+\begin{equation}
+    \rho_{\text{out}} = \prod_{j=1}^{d} \mathcal{E}_j(\rho_{\text{pure}}), \quad \mathcal{E}_j(\rho) = \sum_{k=0}^{D-1} E_k^{(j)} \rho \, E_k^{(j)\dagger}
+\end{equation}
+
+\subsection*{6.2 QCRB vs Total Photon Number $N$ (Fig 3A, $d=2$ fixed)}
+We fix $d=2$ (estimating 2 phases simultaneously) and sweep $n = 1, 2, \ldots, 6$, giving $N = 3n = 3, 6, 9, 12, 15, 18$. The Hilbert space dimension is $(N+1)^3$, reaching a maximum of $19^3 = 6{,}859$ for $N=18$.
+
+Loss parameters tested: $\eta \in \{1.0, 0.95, 0.9, 0.85\}$.
+
+\textbf{Key observations:}
+\begin{itemize}
+    \item All curves decrease monotonically with $N$ (more photons $\rightarrow$ better precision).
+    \item The gap between the lossless ($\eta = 1$) and noisy curves \emph{increases} with $N$, indicating noise has a compounding effect at higher photon numbers.
+    \item HB states outperform N00N states for $N \gtrsim 6$ even in the lossless case.
+    \item For large $N$, the noisy HB curves approach but do not cross the ideal optimal bound $\frac{d(1+\sqrt{d})^2}{4N^2}$.
+\end{itemize}
+
+\textbf{Note:} The original Humphreys figure uses $d=3$ (4 modes). We use $d=2$ (3 modes) because the $d=3$ case at $N=12$ requires eigendecomposing a $28{,}561 \times 28{,}561$ matrix, which exceeds feasible computation time on available hardware.
+
+Output file: \texttt{QCRB\_vs\_N\_d2\_noise.png} (full range), \texttt{QCRB\_vs\_N\_d2\_zoomin.png} (large-$N$ detail).
+
+\subsection*{6.3 QCRB vs Number of Phases $d$ (Fig 3B, $n=1$ fixed)}
+We fix $n=1$ and sweep $d = 1, 2, 3, 4$, giving $N = d+1 = 2, 3, 4, 5$. The Hilbert space dimension is $(d+2)^{d+1}$, reaching $6^5 = 7{,}776$ for $d=4$.
+
+Loss parameters tested: $\eta \in \{1.0, 0.95, 0.9, 0.85\}$.
+
+\textbf{Key observations:}
+\begin{itemize}
+    \item The total variance increases approximately linearly with $d$, consistent with the additive nature of independent phase uncertainties.
+    \item The spacing between $\eta$ curves grows with $d$, showing that noise impact compounds across more phases.
+    \item HB states consistently outperform N00N states at all values of $d$.
+    \item The pure-state HB curve lies close to but above the optimal ideal bound, confirming that HB states are near-optimal but not perfectly so.
+\end{itemize}
+
+Output file: \texttt{QCRB\_vs\_d\_noise.png}.
+
 \end{document}
