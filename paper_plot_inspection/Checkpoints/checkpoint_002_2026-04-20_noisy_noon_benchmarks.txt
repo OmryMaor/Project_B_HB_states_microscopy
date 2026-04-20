@@ -1,0 +1,40 @@
+CHECKPOINT #002 - 2026-04-20
+Project: HB States Metrology (Project B)
+Status: Noisy N00N Benchmarks Implemented & Consistent Analysis Completed
+
+============================================================
+MAJOR UPDATES SINCE CHECKPOINT #001:
+============================================================
+
+1. NOISY N00N BENCHMARKS IMPLEMENTED:
+   - Derived and verified the analytical formula for N00N states under asymmetric photon loss:
+     V = (d^3 * (1 + eta^(N/d))) / (2 * N^2 * eta^(N/d))
+   - Documented this in Theory_And_Notes/Noisy_Benchmark_Formulas.md.
+
+2. PIPELINE INTEGRATION & CONSISTENCY:
+   - Updated Helper_Scripts/generate_humphreys_plots.py to include these benchmarks.
+   - Redid the d=2 study (QCRB vs N) and d=1..4 study (QCRB vs d) to ensure HB and N00N are compared under identical physical parameters.
+   - The primary replication plots (QCRB_vs_N_d2_noise, QCRB_vs_d_noise) now feature dashed color-coded lines for noisy N00N states.
+
+3. COMPUTATIONAL OPTIMIZATION:
+   - Formally documented the transition from Project A's Stinespring Dilation (explicit environmental modes) to the Kraus Operator formalism (mathematically identical but memory-efficient).
+   - This optimization enabled the computation of N=18 for d=2 (Hilbert space dim 6859) for all noise levels.
+
+4. UPDATED PLOTS GENERATED:
+   - QCRB_vs_N_d2_noise.png (and zoom-in)
+   - QCRB_vs_d_noise.png
+   - Noisy N00N dashed lines correctly reflect the same eta as their corresponding solid HB lines.
+
+============================================================
+CURRENT FILE STATUS:
+============================================================
+- Helper_Scripts/generate_humphreys_plots.py: [UPDATED] Main script for replication.
+- Theory_And_Notes/Noisy_Benchmark_Formulas.md: [NEW] Reference for noisy N00N and HB math.
+- Theory_And_Notes/Physics_Math_Notes.tex: [UPDATED] Added computational note on Kraus transition.
+- plots_output/Humphreys_Replications/: [UPDATED] Contains latest consistent comparison plots.
+
+============================================================
+NEXT STEPS:
+============================================================
+- Evaluate the N=12 results for d=3 more thoroughly if needed for the paper's final figures.
+- Prepare the final report using the collected data.
