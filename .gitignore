@@ -1,4 +1,15 @@
-# Ignore
+# Ignore standard Python cache
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
+
+# Ignore development and legacy folders
+Helper_Scripts/
+Theory_And_Notes/
+plots_output/Humphreys_Replications/
+Data/
+Project_A_files/
+checkpoints/
+paper_plot_inspection/
+HB_QFI_loss.ipynb
+scratch/
